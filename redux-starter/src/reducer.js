@@ -1,4 +1,4 @@
-import { BUG_ADDED, BUG_REMOVED } from "./actionTypes";
+import { BUG_ADDED, BUG_REMOVED, BUG_RESOLVED } from "./actionTypes";
 
 // [] - store
 
@@ -11,12 +11,17 @@ export default function reducer(state = [], action) {
         ...state,
         {
           id: ++lastId,
+          name: action.payload.name,
           description: action.payload.description,
           resolved: false,
         },
       ];
     case BUG_REMOVED:
       return state.filter((bug) => bug.id !== action.payload.id);
+    case BUG_RESOLVED:
+      return state.map((bug) =>
+        bug.id !== action.payload.id ? bug : { ...bug, resolved: true }
+      );
     default:
       return state;
   }
